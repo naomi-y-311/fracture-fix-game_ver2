@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const gameLayer = document.getElementById('game-layer');
 
     // 要素が正しく取得できているか確認
-    if (!video) {
+    if (!video || !openingLayer) {
         console.error("エラー: opening-video 要素が見つかりません。");
         return;
     }
@@ -27,8 +27,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // 2. 動画が終わったらイラストとボタンを表示
     video.addEventListener('ended', () => {
         console.log("動画が終了しました。");
-        startUI.classList.remove('hidden');
         video.style.display = 'none';
+        startUI.classList.remove('hidden');
         openingLayer.style.background = '#ffcdd2'; 
     });
 
