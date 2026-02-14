@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
         console.log("動画が終了しました。");
         video.style.display = 'none';
         startUI.classList.remove('hidden');
-        openingLayer.style.background = '#ffcdd2'; 
+        openingLayer.style.background = '#8eadd8'; 
     });
 
     // 3. ボタンクリックでゲームレイヤーへ切り替え
