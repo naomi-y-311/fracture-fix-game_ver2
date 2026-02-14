@@ -1,44 +1,53 @@
-// 要素の取得
-const video = document.getElementById('opening-video');
-const startUI = document.getElementById('start-ui');
-const startBtn = document.getElementById('start-btn');
-const openingLayer = document.getElementById('opening-layer');
-const gameLayer = document.getElementById('game-layer');
+// 全ての読み込みが終わってから実行
+window.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('opening-video');
+    const startUI = document.getElementById('start-ui');
+    const startBtn = document.getElementById('start-btn');
+    const openingLayer = document.getElementById('opening-layer');
+    const gameLayer = document.getElementById('game-layer');
 
-// 1. 画面のどこをクリックしても動画が再生されるようにする
-document.addEventListener('click', () => {
-    if (video.paused) {
-        video.play().catch(error => {
-            console.log("再生に失敗しました:", error);
-        });
+    // 要素が正しく取得できているか確認
+    if (!video) {
+        console.error("エラー: opening-video 要素が見つかりません。");
+        return;
     }
-}, { once: false }); // 何度でも反応するように（または一度だけならonce: true）
+    console.log("UI Control: 準備完了。画面をクリックして再生してください。");
 
-// 2. 動画が終わったらイラストとボタンを表示
-video.addEventListener('ended', () => {
-    startUI.classList.remove('hidden');
-    // 動画を非表示にする（ボタンを押しやすくするため）
-    video.style.display = 'none';
-    // 背景を黒からパズルの背景色に近い色に変えるとスムーズです
-    openingLayer.style.background = '#ffcdd2'; 
-});
-
-// 3. ボタンクリックでゲームレイヤーへ切り替え
-startBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // 親要素のクリックイベント（再生）が走らないようにする
-    
-    openingLayer.style.opacity = '0';
-    openingLayer.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        openingLayer.classList.add('hidden');
-        gameLayer.classList.remove('hidden');
-        
-        // script.js側の初期化
-        if (typeof init === "function") {
-            init(); 
-            // 画面サイズを再計算させる
-            if (typeof resize === "function") resize();
+    // 1. 画面のどこをクリックしても動画が再生されるようにする
+    const handleFirstClick = () => {
+        if (video.paused) {
+            video.play()
+                .then(() => console.log("動画の再生を開始しました。"))
+                .catch(error => console.error("再生失敗:", error));
         }
-    }, 500);
+    };
+
+    document.addEventListener('click', handleFirstClick);
+
+    // 2. 動画が終わったらイラストとボタンを表示
+    video.addEventListener('ended', () => {
+        console.log("動画が終了しました。");
+        startUI.classList.remove('hidden');
+        video.style.display = 'none';
+        openingLayer.style.background = '#ffcdd2'; 
+    });
+
+    // 3. ボタンクリックでゲームレイヤーへ切り替え
+    startBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log("ゲーム画面へ切り替えます。");
+        
+        openingLayer.style.opacity = '0';
+        openingLayer.style.transition = 'opacity 0.5s ease';
+        
+        setTimeout(() => {
+            openingLayer.classList.add('hidden');
+            gameLayer.classList.remove('hidden');
+            
+            if (typeof init === "function") {
+                init(); 
+                if (typeof resize === "function") resize();
+            }
+        }, 500);
+    });
 });
