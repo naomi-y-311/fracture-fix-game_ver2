@@ -107,21 +107,15 @@ body {
     object-fit: contain; /* 動画の比率を維持 */
 }
 
-/* 右下のイラストとボタン */
+/* ボタン */
 #start-ui {
     position: absolute;
-    right: 20px;
-    bottom: 40px;
+　　 inset:0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     animation: fadeIn 0.8s ease forwards;
-}
-
-#char-img {
-    width: 120px; /* イラストのサイズ */
-    height: auto;
 }
 
 #start-btn {
