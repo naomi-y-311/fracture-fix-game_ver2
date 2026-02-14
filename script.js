@@ -603,3 +603,33 @@ function updateProgress() {
 
     // 実行開始
     init();
+
+// --- オープニング演出の制御 ---
+const video = document.getElementById('opening-video');
+const startUI = document.getElementById('start-ui');
+const startBtn = document.getElementById('start-btn');
+const openingLayer = document.getElementById('opening-layer');
+const gameLayer = document.getElementById('game-layer');
+
+// ページ読み込み時に動画を再生（ブラウザ制限のためクリックが必要な場合があります）
+window.addEventListener('load', () => {
+    video.play().catch(() => {
+        console.log("自動再生がブロックされました。ユーザー操作が必要です。");
+    });
+});
+
+// 動画が終わったらボタンを表示
+video.addEventListener('ended', () => {
+    startUI.classList.remove('hidden');
+});
+
+// スタートボタンが押されたら画面切り替え
+startBtn.addEventListener('click', () => {
+    openingLayer.classList.add('hidden'); // 動画層を隠す
+    gameLayer.classList.remove('hidden');  // ゲーム層を表示
+    
+    // ゲームの初期化が必要な場合はここで呼ぶ
+    // ※現状の script.js は init() が即実行されるので、
+    // resize() を一度呼んでキャンバスサイズを確定させると安心です。
+    resize();
+});
