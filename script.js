@@ -378,7 +378,7 @@ const canvas = document.getElementById('gameCanvas');
         updateProgress();
     }
 
-function updateProgress() {
+    function updateProgress() {
         if (!pieces || pieces.length === 0) return;
 
         const bones = pieces.filter(p => p.type === 'bone');
@@ -436,7 +436,7 @@ function updateProgress() {
             statusDiv.style.backgroundColor = "rgba(255, 255, 255, 0.9)"; // 背景を白く
             statusDiv.style.padding = "20px";
             statusDiv.style.borderRadius = "15px";
-            statusDiv.style.boxShadow = "0 10px 10px rgba(0,0,0,0.3)";
+            statusDiv.style.boxShadow = "0 10px 10px rgba(0,0,0,0.2)";
             statusDiv.style.zIndex = "100"; // 最前面へ
             statusDiv.style.transition = "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)"; // ボヨヨンというアニメーション
 
@@ -452,15 +452,15 @@ function updateProgress() {
                     particleCount: 5,
                     angle: 60,
                     spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
+                    origin: { x: 0, y: 0.8 },
+                    colors: ['#F06292', '#BA68C8', '#4FC3F7', '#FF8A65']
                 });
                 confetti({
                     particleCount: 5,
                     angle: 120,
                     spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
+                    origin: { x: 1, y: 0.8 },
+                    colors: ['#F06292', '#BA68C8', '#4FC3F7', '#FF8A65']
                 });
 
                 if (Date.now() < end) {
