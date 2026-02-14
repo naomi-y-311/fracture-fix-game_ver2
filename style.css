@@ -1,16 +1,27 @@
 body {
         margin: 0;
         overflow: hidden;
-        background-color: #ffcdd2; /* 初期：赤（腫れ） */
         font-family: "Helvetica Neue", Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100dvh;
         user-select: none;
         -webkit-user-select: none;
     }
+
+/* --- 修正：既存のbodyの中身をgame-layerへ --- */
+        #game-layer {
+            margin: 0;
+            overflow: hidden;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            width: 100%;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffcdd2; /* 初期：赤（腫れ） */
+        }
+
     h1 {
         font-size: 1.2rem;
         color: #b71c1c;
@@ -74,3 +85,57 @@ body {
         z-index: 10;
         text-shadow: 0 1px 2px rgba(255,255,255,0.8);
     }
+
+.hidden {
+    display: none !important;
+}
+
+#opening-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100dvh;
+    background: #000;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#opening-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 動画の比率を維持 */
+}
+
+/* 右下のイラストとボタン */
+#start-ui {
+    position: absolute;
+    right: 20px;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: fadeIn 0.8s ease forwards;
+}
+
+#char-img {
+    width: 120px; /* イラストのサイズ */
+    height: auto;
+}
+
+#start-btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background: #b71c1c;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
