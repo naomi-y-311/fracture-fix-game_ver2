@@ -33,21 +33,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. ボタンクリックでゲームレイヤーへ切り替え
-    startBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        console.log("ゲーム画面へ切り替えます。");
+// ui-control.js のスタートボタン処理
+startBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    // 動画を完全に停止
+    video.pause();
+    video.currentTime = 0;
+    // メモリ節約のためソースを空にする、または要素を消去する
+    video.load(); 
+
+    openingLayer.style.opacity = '0';
+    openingLayer.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        openingLayer.classList.add('hidden');
+        gameLayer.classList.remove('hidden');
         
-        openingLayer.style.opacity = '0';
-        openingLayer.style.transition = 'opacity 0.5s ease';
-        
-        setTimeout(() => {
-            openingLayer.classList.add('hidden');
-            gameLayer.classList.remove('hidden');
-            
-            if (typeof init === "function") {
-                init(); 
-                if (typeof resize === "function") resize();
-            }
-        }, 500);
-    });
+        if (typeof init === "function") {
+            init(); 
+            if (typeof resize === "function") resize();
+        }
+    }, 500);
 });
