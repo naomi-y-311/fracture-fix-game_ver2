@@ -443,6 +443,27 @@ const canvas = document.getElementById('gameCanvas');
             // スマホの振動
             if(navigator.vibrate) navigator.vibrate([100,50,100,50,200]);
 
+            // --- 修正点：リスタートボタンを表示し、クリックイベントを設定 ---
+        const restartBtn = document.getElementById('restart-btn');
+        if (restartBtn) {
+            restartBtn.classList.remove('hidden'); // ボタンを表示
+            
+            restartBtn.onclick = () => {
+                // ゲーム状態の完全リセット
+                isCompleted = false;
+                pieces = [];
+                selectedPiece = null;
+                isDragging = false;
+                
+                // ボタンを再び隠す
+                restartBtn.classList.add('hidden');
+                
+                // ステータスを戻して初期化
+                statusDiv.textContent = "バラバラの骨をドラッグして整復してください";
+                init(); // パズルをランダムに再配置して開始
+            };
+        }
+
             // 紙吹雪発射
             const duration = 1500;
             const end = Date.now() + duration;
