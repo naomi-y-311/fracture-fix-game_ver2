@@ -1,30 +1,32 @@
 // 全ての読み込みが終わってから実行
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => { // DOMContentLoadedより確実なloadを使用
     const video = document.getElementById('opening-video');
     const startUI = document.getElementById('start-ui');
     const startBtn = document.getElementById('start-btn');
     const openingLayer = document.getElementById('opening-layer');
     const gameLayer = document.getElementById('game-layer');
 
-    // 要素が正しく取得できているか確認
     if (!video || !openingLayer) {
-        console.error("エラー: opening-video 要素が見つかりません。");
+        console.error("エラー: 要素が見つかりません。");
         return;
     }
+
     console.log("UI Control: 準備完了。画面をクリックして再生してください。");
 
-    // 1. 画面のどこをクリックしても動画が再生されるようにする
-    const handleFirstClick = () => {
+    // 1. 黒い画面全体をクリック対象にする
+    openingLayer.addEventListener('click', function handleFirstClick() {
         if (video.paused) {
             video.play()
-                .then(() => console.log("動画の再生を開始しました。"))
+                .then(() => {
+                    console.log("動画の再生を開始しました。");
+                    // 再生が始まったら、このクリックイベントは不要なので削除
+                    openingLayer.removeEventListener('click', handleFirstClick);
+                })
                 .catch(error => console.error("再生失敗:", error));
         }
-    };
+    });
 
-    document.addEventListener('click', handleFirstClick);
-
-    // 2. 動画が終わったらイラストとボタンを表示
+    // 2. 動画が終わったらボタンを表示
     video.addEventListener('ended', () => {
         console.log("動画が終了しました。");
         video.style.display = 'none';
@@ -33,26 +35,25 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. ボタンクリックでゲームレイヤーへ切り替え
-// ui-control.js のスタートボタン処理
-startBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
+    startBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // 親要素（openingLayer）のクリックイベント連動を防ぐ
 
-    // 動画を完全に停止
-    video.pause();
-    video.currentTime = 0;
-    // メモリ節約のためソースを空にする、または要素を消去する
-    video.load(); 
+        // 音声を完全に止める
+        video.pause();
+        video.currentTime = 0;
+        video.load(); 
 
-    openingLayer.style.opacity = '0';
-    openingLayer.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        openingLayer.classList.add('hidden');
-        gameLayer.classList.remove('hidden');
+        openingLayer.style.opacity = '0';
+        openingLayer.style.transition = 'opacity 0.5s ease';
         
-        if (typeof init === "function") {
-            init(); 
-            if (typeof resize === "function") resize();
-        }
-    }, 500);
+        setTimeout(() => {
+            openingLayer.classList.add('hidden');
+            gameLayer.classList.remove('hidden');
+            
+            if (typeof init === "function") {
+                init(); 
+                if (typeof resize === "function") resize();
+            }
+        }, 500);
+    });
 });
